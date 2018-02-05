@@ -109,27 +109,35 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': True,
+    'disable_existing_loggers': False,
     'formatters': {
-        'standard': {
-            'format': '%(levelname)s %(asctime)s %(message)s'
+        'verbose': {
+            'format': '[%(asctime)s] [%(levelname)s] %(message)s'
         },
-    },
-    'filters': {
     },
     'handlers': {
-        'default': {
-            'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(BASE_DIR+'/logs/','teleBot.log'),
-            'formatter': 'standard',
+        'console':{
+            'level':'INFO',
+            'class':'logging.StreamHandler',
+            'formatter': 'verbose'
         },
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR+'/logs/','teleBot.log'),
+            'formatter': 'verbose'
+        },
+        'email': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'include_html' : True,
+        }
     },
     'loggers': {
-        'default': {
-            'handlers': ['default'],
+        'django': {
+            'handlers': ['console', 'file', 'email'],
             'level': 'INFO',
-            'propagate': False,
+            'propagate': True,
         },
     },
 }
