@@ -1,10 +1,10 @@
+import logging
+
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 
-import logging
-
-logger = logging.getLogger('default')
+logger = logging.getLogger('django')
 
 
 @csrf_exempt
@@ -14,5 +14,10 @@ def snippet_list(request):
     """
     if request.method == 'POST':
         data = JSONParser().parse(request)
-        logging.warning(data)
-        return JsonResponse({'test':'test'}, status=400)
+        if 'HTTP_X_FORWARDED_FOR' in request.META:
+            ip = request.META['HTTP_X_FORWARDED_FOR']
+        else:
+            ip = request.META['REMOTE_ADDR']
+        logger.info('request ip: ' + ip)
+        logger.info(data)
+        return JsonResponse({'status':'ok'}, status=200)
