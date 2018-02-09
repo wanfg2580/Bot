@@ -14,10 +14,5 @@ def snippet_list(request):
     """
     if request.method == 'POST':
         data = JSONParser().parse(request)
-        if 'HTTP_X_FORWARDED_FOR' in request.META:
-            ip = request.META['HTTP_X_FORWARDED_FOR']
-        else:
-            ip = request.META['REMOTE_ADDR']
-        logger.info('request ip: ' + ip)
         logger.info(data)
         return JsonResponse({'status':'ok'}, status=200)
