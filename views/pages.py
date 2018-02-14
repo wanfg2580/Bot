@@ -5,5 +5,13 @@ class HomePage(TemplateView):
     template_name = "index.html"
 
 
-class BotManage(TemplateView):
-    template_name = "bots/bot-manage.html"
+class TeleBot(TemplateView):
+    template_name = "bots/tele-bot.html"
+
+
+class WechatAdmin(TemplateView):
+    template_name = "bots/wechat-admin.html"
+
+
+class WechatMessage(TemplateView):
+    template_name = "bots/wechat-messages.html"
