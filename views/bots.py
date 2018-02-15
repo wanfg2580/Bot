@@ -2,10 +2,12 @@ import os
 import telegram
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import TemplateView
 from rest_framework.parsers import JSONParser
+from wechat_bot.models import Admin
 
 
-class Bot:
+class Bot(TemplateView):
     @csrf_exempt
     def init_bot(self, request):
         global bot
@@ -22,3 +24,7 @@ class Bot:
     def bot_info(self, request):
         if request.method == 'POST':
             return JsonResponse(bot.get_me(), status=200)
+
+    def add_admin(self):
+        print(Admin.list_all_admin())
+        return JsonResponse({'test':'test'}, status=200)
