@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from views import bots, messages, pages
+from wechat_bot.views import bots, messages, pages
 
 urlpatterns = [
     # Pages
@@ -10,5 +10,6 @@ urlpatterns = [
 
     url(r'^messages/$', messages.Message.messages, name='message-url'),
     url(r'^initBot/$', bots.Bot.init_bot, name='init bot'),
-    url(r'^add_admin/$', bots.Bot.add_admin, name='add wechat admin'),
+    url(r'^wechat_admin/admin_list/$', bots.Bot.get_admin_list, name='get admin list'),
+    url(r'^wechat_admin/add_admin/$', bots.Bot.add_admin, name='add wechat admin'),
 ]

@@ -12,6 +12,5 @@ CREATE TABLE `wxadmins` (
   `status` int(11) DEFAULT '0' COMMENT '状态',
   `created_at` datetime NOT NULL COMMENT '创建时间',
   `updated_at` datetime NOT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `index_admins_on_name` (`name`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信管理员表';

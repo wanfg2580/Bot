@@ -32,16 +32,16 @@
         <div class="sidebar-collapse">
             <ul class="nav" id="main-menu">
                 <li>
-                    <a class="active-menu" href=""><i class="fa fa-dashboard"></i>Dashboard</a>
+                    <a href=""><i class="fa fa-dashboard"></i>Dashboard</a>
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-wechat "></i>微信管理 <span class="fa arrow"></span></a>
+                    <a class="active-menu" href="#"><i class="fa fa-wechat "></i>微信管理 <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="wechat_admin/"><i class="fa fa-adn"></i>管理员设置</a>
+                            <a href="/wechat_admin/"><i class="fa fa-adn"></i>管理员设置</a>
                         </li>
                         <li>
-                            <a href="wechat_messages/"><i class="fa fa-comment"></i>消息管理</a>
+                            <a href="/wechat_messages/"><i class="fa fa-comment"></i>消息管理</a>
                         </li>
                     </ul>
                 </li>
@@ -50,7 +50,7 @@
                     <a href="#"><i class="fa fa-steam-square "></i>电报管理 <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="tele_bot/"><i class="fa fa-flash "></i>关键字设置 </a>
+                            <a href="/tele_bot/"><i class="fa fa-flash "></i>关键字设置 </a>
                         </li>
                     </ul>
                 </li>
@@ -82,6 +82,7 @@
                                         <th>管理员昵称</th>
                                         <th>管理员等级</th>
                                         <th>群名称</th>
+                                        <th>是否可用</th>
                                         <th>操作</th>
                                     </tr>
                                     </thead>
@@ -109,33 +110,33 @@
                             <form role="form">
                                 <div class="form-group">
                                     <label>管理员昵称</label>
-                                    <input class="form-control" type="text">
+                                    <input id="name" class="form-control" type="text">
                                     <p class="help-block">DVN榕树网络-微信小秘书</p>
                                 </div>
                                 <div class="form-group">
                                     <label>管理级别</label>
-                                    <select class="form-control">
-                                        <option>任意群</option>
-                                        <option>单群</option>
+                                    <select id="level" class="form-control" onchange="change_level()">
+                                        <option value="0">任意群</option>
+                                        <option value="1">单群</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label>群名称</label>
-                                    <input class="form-control" type="text">
+                                    <input id="group-name" class="form-control" type="text" disabled>
                                     <p class="help-block">BBN-Fans-Team-No.1</p>
                                 </div>
                                 <div class="form-group">
                                     <label>是否可用</label>
-                                    <select class="form-control">
-                                        <option>可用</option>
-                                        <option>不可用</option>
+                                    <select id="status" class="form-control">
+                                        <option value="0">可用</option>
+                                        <option value="-1">不可用</option>
                                     </select>
                                 </div>
                             </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                            <button type="button" class="btn btn-info">保存</button>
+                            <button type="button" onclick="add_admin()" class="btn btn-info">保存</button>
                         </div>
                     </div>
                 </div>
@@ -157,6 +158,8 @@
     <script src="/static/js/jquery.metisMenu.js"></script>
     <!-- CUSTOM SCRIPTS -->
     <script src="/static/js/custom.js"></script>
-
+    <script src="/static/js/util/dataUtil.js"></script>
+    <script src="/static/js/bots/wechat-admin.js"></script>
+</div>
 </body>
 </html>

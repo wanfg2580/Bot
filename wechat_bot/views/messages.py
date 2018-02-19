@@ -9,7 +9,7 @@ logger = logging.getLogger('django')
 
 class Message:
     @csrf_exempt
-    def messages(self, request):
+    def messages(request):
         if request.method == 'POST':
             data = JSONParser().parse(request)
             logger.info(data)
