@@ -26,11 +26,12 @@ def do_init():
 
     if admin_list is not None:
         for admin in admin_list:
-            admin_dict = admin.__dict__
-            admin_info = itchat.search_friends(nickName=admin_dict['name'])
-            group_info = itchat.search_chatrooms(admin_dict['group_name']) if admin_dict['group_name'] is not None else []
-            target_admin_uns[admin_info[0]['UserName']] = []
-            target_admin_uns[admin_info[0]['UserName']].append(group_info[0]['UserName'] if len(group_info) > 0 else '0')
+            if admin.status == 0:
+                admin_dict = admin.__dict__
+                admin_info = itchat.search_friends(nickName=admin_dict['name'])
+                group_info = itchat.search_chatrooms(admin_dict['group_name']) if admin_dict['group_name'] is not None else []
+                target_admin_uns[admin_info[0]['UserName']] = []
+                target_admin_uns[admin_info[0]['UserName']].append(group_info[0]['UserName'] if len(group_info) > 0 else '0')
 
     logger.info('初始化管理员[%s人]成功！' % (len(target_admin_uns)))
 
@@ -71,6 +72,23 @@ def add_admin(nick_name, group_name=0):
         target_admin_uns[admin_info[0]['UserName']].append(group_info[0]['UserName'])
     else:
         target_admin_uns[admin_info[0]['UserName']].append('0')
+
+
+def remove_admin(nick_name):
+    """
+    移除管理员信息
+    :param nick_name: 昵称
+    :param group_name: 群名
+    :return:
+    """
+    admin_info = itchat.search_friends(nickName=nick_name)
+    if len(admin_info) <= 0:
+        return False
+    if admin_info[0]['UserName'] in target_admin_uns.keys():
+        target_admin_uns.pop(admin_info[0]['UserName'])
+        return True
+    else:
+        return False
 
 
 # 群消息

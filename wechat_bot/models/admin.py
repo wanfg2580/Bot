@@ -20,3 +20,15 @@ class Admin(models.Model):
     @staticmethod
     def add_admin(name, right_level, group_name=None, status=0):
         return Admin.objects.create(name=name, right_level=right_level, group_name=group_name, status=status)
+
+    @staticmethod
+    def change_status(id, status):
+        return Admin.objects.filter(id=id).update(status=status)
+
+    @staticmethod
+    def update_admin(id, name, right_level, group_name=None, status=0):
+        return Admin.objects.filter(id=id).update(name=name, right_level=right_level, group_name=group_name, status=status)
+
+    @staticmethod
+    def find_by_id(id):
+        return Admin.objects.filter(id=id).first()
