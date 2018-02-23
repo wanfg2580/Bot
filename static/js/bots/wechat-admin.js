@@ -20,11 +20,12 @@ var get_admin_list = function () {
                 html += "<td>" + status + "</td>";
                 html += "<td><botton id='edit-" + data[i].id + "' onclick='init_edit(" + i + ")' class='btn btn-primary' data-toggle='modal' data-target='#editAdmin'>" +
                     "<i class='glyphicon glyphicon-edit'></i>修改</botton>" +
-                    "<button class='btn btn-danger' onclick='remove_admin(" + data[i].id +")'";
+                    "<button class='btn btn-info' onclick='remove_admin(" + data[i].id +")'";
                 if (data[i].status === -1){
                     html += "disabled";
                 }
-                html += "><i class='glyphicon glyphicon-remove'></i>暂停</button>" +
+                html += "><i class='glyphicon glyphicon-stop'></i>暂停</button>" +
+                    "<button onclick='delete_admin(" + data[i].id + ")' class='btn btn-danger'><i class='glyphicon glyphicon-remove'></i>删除</button>" +
                     "</td></tr>";
             }
             $('#admin-list').html(html);
@@ -47,6 +48,8 @@ var add_admin = function () {
     postData('add_admin/', JSON.stringify(params), function (data) {
         if (data.code === '0000') {
             alert('添加管理员成功')
+        } else {
+            alert('添加管理员失败,请确认昵称与群名')
         }
         location.reload();
     });
@@ -77,6 +80,15 @@ var remove_admin = function (id) {
     getData('remove_admin/?id=' + id, function (data) {
         if (data.code === '0000') {
             alert('禁停成功')
+        }
+        location.reload();
+    });
+};
+
+var delete_admin = function (id) {
+    getData('delete_admin/?id=' + id, function (data) {
+        if (data.code === '0000') {
+            alert('删除成功')
         }
         location.reload();
     });

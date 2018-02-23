@@ -32,3 +32,7 @@ class Admin(models.Model):
     @staticmethod
     def find_by_id(id):
         return Admin.objects.filter(id=id).first()
+
+    @staticmethod
+    def delete_by_id(id):
+        return Admin.objects.filter(id=id).delete()

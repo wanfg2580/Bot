@@ -14,4 +14,5 @@ urlpatterns = [
     url(r'^wechat_admin/add_admin/$', bots.Bot.add_admin, name='add wechat admin'),
     url(r'^wechat_admin/edit_admin/$', bots.Bot.edit_admin, name='edit wechat admin'),
     url(r'^wechat_admin/remove_admin/$', bots.Bot.remove_admin, name='edit wechat admin'),
+    url(r'^wechat_admin/delete_admin/$', bots.Bot.delete_admin, name='edit wechat admin'),
 ]

@@ -60,12 +60,16 @@ class Bot(TemplateView):
             right_level = data.get('right_level')
             status = data.get('status')
             if right_level == 0:
-                Admin.add_admin(name=name, right_level=right_level, status=status)
-                wechat_util.add_admin(name)
+                if wechat_util.add_admin(name):
+                    Admin.add_admin(name=name, right_level=right_level, status=status)
+                else:
+                    return JsonResponse({'code': '0001'}, status=200)
             else:
                 group_name = data.get('group_name')
-                Admin.add_admin(name=name, right_level=right_level, group_name=group_name, status=status)
-                wechat_util.add_admin(name, group_name)
+                if wechat_util.add_admin(name, group_name):
+                    Admin.add_admin(name=name, right_level=right_level, group_name=group_name, status=status)
+                else:
+                    return JsonResponse({'code': '0001'}, status=200)
             return JsonResponse({'code': '0000'}, status=200)
 
     @csrf_exempt
@@ -84,12 +88,16 @@ class Bot(TemplateView):
             if status == -1:
                 return JsonResponse({'code': '0000'}, status=200)
             if right_level == 0:
-                Admin.update_admin(id=id, name=name, right_level=right_level, status=status)
-                wechat_util.add_admin(name)
+                if wechat_util.add_admin(name):
+                    Admin.update_admin(id=id, name=name, right_level=right_level, status=status)
+                else:
+                    return JsonResponse({'code': '0001'}, status=200)
             else:
                 group_name = data.get('group_name')
-                Admin.add_admin(name=name, right_level=right_level, group_name=group_name, status=status)
-                wechat_util.add_admin(name, group_name)
+                if wechat_util.add_admin(name, group_name):
+                    Admin.update_admin(id=id, name=name, right_level=right_level, group_name=group_name, status=status)
+                else:
+                    return JsonResponse({'code': '0001'}, status=200)
         return JsonResponse({'code': '0000'}, status=200)
 
     @csrf_exempt
@@ -106,4 +114,20 @@ class Bot(TemplateView):
                 return JsonResponse({'code': '0000'}, status=200)
             else:
                 logger.info('禁止管理员%s操作失败', admin.name)
+                return JsonResponse({'code': '0001'}, status=200)
+
+    @csrf_exempt
+    def delete_admin(request):
+        """
+        删除管理员
+        :return:
+        """
+        if request.method == 'GET':
+            admin = Admin.find_by_id(request.GET['id'])
+            if wechat_util.remove_admin(admin.name) or admin.status:
+                Admin.delete_by_id(request.GET['id'])
+                logger.info('删除管理员%s操作成功', admin.name)
+                return JsonResponse({'code': '0000'}, status=200)
+            else:
+                logger.info('删除管理员%s操作失败', admin.name)
                 return JsonResponse({'code': '0001'}, status=200)

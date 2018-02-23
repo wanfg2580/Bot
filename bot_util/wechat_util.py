@@ -65,13 +65,18 @@ def add_admin(nick_name, group_name=0):
     :return:
     """
     admin_info = itchat.search_friends(nickName=nick_name)
+    if len(admin_info) <= 0:
+        return False
     if admin_info[0]['UserName'] not in target_admin_uns.keys():
         target_admin_uns[admin_info[0]['UserName']] = []
     if group_name != 0:
         group_info = itchat.search_chatrooms(group_name)
+        if len(group_info) <= 0:
+            return False
         target_admin_uns[admin_info[0]['UserName']].append(group_info[0]['UserName'])
     else:
         target_admin_uns[admin_info[0]['UserName']].append('0')
+    return True
 
 
 def remove_admin(nick_name):
