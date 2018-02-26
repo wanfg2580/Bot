@@ -100,6 +100,7 @@ var init_edit = function (index) {
     $('#editGroupName').val(adminList[index].group_name);
     $('#editStatus').val(adminList[index].status === 0 ? '0' : '-1');
     id = adminList[index].id;
+    change_level();
 };
 
 var change_level = function () {
@@ -108,6 +109,12 @@ var change_level = function () {
         $('#group-name').attr("disabled",true)
     } else {
         $('#group-name').attr("disabled",false)
+    }
+    var edit_level = $('#editLevel').val();
+    if (edit_level === '0') {
+        $('#editGroupName').attr("disabled",true)
+    } else {
+        $('#editGroupName').attr("disabled",false)
     }
 };
 
