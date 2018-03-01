@@ -7,7 +7,7 @@ from bot_util import wechat_util
 
 
 def wechat_start():
-    itchat.auto_login(True, enableCmdQR=2)
+    itchat.auto_login(True)
     wechat_util.do_init()
     itchat.run(True)
 

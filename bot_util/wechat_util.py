@@ -4,6 +4,7 @@ import re
 import itchat
 from itchat.content import TEXT
 from wechat_bot.models import Admin
+from wechat_bot.models import WechatMessage
 
 logger = logging.getLogger('django')
 
@@ -57,25 +58,19 @@ def handle_admin_operation(msg):
                     return '\U0001f333%s,亲，系统记录到您违反社区规则，将被暂时移除列入广告灰名单,无法获取榕树最新信息哦~多谢亲们的理解。' % kickee
 
 
-def add_admin(nick_name, group_name=0):
+def add_admin(user_id, group_id=0):
     """
     添加管理员
-    :param nick_name: 管理员昵称
-    :param group_name: 群名
+    :param nick_id: 管理员编号
+    :param group_id: 群编号
     :return:
     """
-    admin_info = itchat.search_friends(nickName=nick_name)
-    if len(admin_info) <= 0:
-        return False
-    if admin_info[0]['UserName'] not in target_admin_uns.keys():
-        target_admin_uns[admin_info[0]['UserName']] = []
-    if group_name != 0:
-        group_info = itchat.search_chatrooms(group_name)
-        if len(group_info) <= 0:
-            return False
-        target_admin_uns[admin_info[0]['UserName']].append(group_info[0]['UserName'])
+    if user_id not in target_admin_uns.keys():
+        target_admin_uns[user_id] = []
+    if group_id != 0:
+        target_admin_uns[user_id].append(group_id)
     else:
-        target_admin_uns[admin_info[0]['UserName']].append('0')
+        target_admin_uns[user_id].append('0')
     return True
 
 
@@ -96,11 +91,34 @@ def remove_admin(nick_name):
         return False
 
 
+def get_friends_list():
+    friend_list = itchat.get_friends()
+    result = []
+    for friend in friend_list:
+        wechat_friend = {'UserName': friend['UserName'], 'NickName': friend['NickName']}
+        result.append(wechat_friend)
+    return result
+
+
+def get_groups_list():
+    chatroom_list = itchat.get_chatrooms()
+    groups_result = []
+    for chatroom in chatroom_list:
+        wechat_friend = {'UserName': chatroom['UserName'], 'NickName': chatroom['NickName']}
+        groups_result.append(wechat_friend)
+    return groups_result
+
+
 # 群消息
 @itchat.msg_register(TEXT, isGroupChat=True)
 def text_reply(msg):
+    group_name = itchat.search_chatrooms(userName=msg['FromUserName'])['NickName']
     logger.info('[%s@%s\t]:%s' % (
-        msg['ActualNickName'], itchat.search_chatrooms(userName=msg['FromUserName'])['NickName'], msg['Text']))
+        msg['ActualNickName'], group_name, msg['Text']))
+
+    WechatMessage.add_message(msg_id=msg['NewMsgId'], user_name=msg['ActualNickName'], user_id=msg['ToUserName'], is_group=True,
+                              group_id=msg['FromUserName'], group_name=group_name, msg_content=msg['Text'])
+
     if msg['ActualUserName'] in target_admin_uns.keys() \
             and (msg['FromUserName'] in target_admin_uns[msg['ActualUserName']]
                  or '0' in target_admin_uns[msg['ActualUserName']]):

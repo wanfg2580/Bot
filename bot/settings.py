@@ -25,8 +25,9 @@ SECRET_KEY = 'v9n1jc(r%8e@k0smtm+)v&dxvhcp2+&cz%8p5(rd8vrhsddq^@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['10.0.0.6']
+ALLOWED_HOSTS = ['10.0.0.6', 'localhost']
 
+TOKEN = 'your token'
 
 # Application definition
 
@@ -80,7 +81,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'HOST': '127.0.0.1',
         'PORT': '3306',
-        'NAME': 'bot',
+        'NAME': 'bot_back',
         'USER': 'root',
         'PASSWORD': 'root',
         'OPTIONS': {

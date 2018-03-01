@@ -1,8 +1,6 @@
-import os
-
-import itchat
-import telegram
 import logging
+import telegram
+from django.conf import settings
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
@@ -13,24 +11,7 @@ from bot_util import wechat_util
 logger = logging.getLogger('django')
 
 
-class Bot(TemplateView):
-    @csrf_exempt
-    def init_bot(request):
-        global bot
-        if request.method == 'POST':
-            data = JSONParser().parse(request)
-            path = data.get("path")
-            certificate = open(os.path.join(path), "rb")
-            bot = telegram.Bot(token=data.get('token'))
-            bot.set_webhook(data.get('url'), certificate=certificate)
-            info = bot.get_webhook_info()
-            return JsonResponse(info, status=200)
-
-    @csrf_exempt
-    def bot_info(request):
-        if request.method == 'POST':
-            return JsonResponse(bot.get_me(), status=200)
-
+class WechatBot(TemplateView):
     @csrf_exempt
     def get_admin_list(request):
         """
@@ -131,3 +112,30 @@ class Bot(TemplateView):
             else:
                 logger.info('删除管理员%s操作失败', admin.name)
                 return JsonResponse({'code': '0001'}, status=200)
+
+    @csrf_exempt
+    def get_friends_list(request):
+        """
+        获取好友列表
+        :return:
+        """
+        if request.method == 'GET':
+            return JsonResponse({'code': '0000', 'data': wechat_util.get_friends_list()}, status=200)
+
+    @csrf_exempt
+    def get_groups_list(request):
+        """
+        获取群组列表
+        :return:
+        """
+        if request.method == 'GET':
+            return JsonResponse({'code': '0000', 'data': wechat_util.get_groups_list()}, status=200)
+
+
+class TelegramBot:
+
+    @csrf_exempt
+    def bot_info(request):
+        telegram_bot = telegram.Bot(settings.TOKEN)
+        if request.method == 'POST':
+            return JsonResponse(TelegramBot.telegram_bot.get_me(), status=200)
