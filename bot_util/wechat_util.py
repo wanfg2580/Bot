@@ -58,19 +58,25 @@ def handle_admin_operation(msg):
                     return '\U0001f333%s,亲，系统记录到您违反社区规则，将被暂时移除列入广告灰名单,无法获取榕树最新信息哦~多谢亲们的理解。' % kickee
 
 
-def add_admin(user_id, group_id=0):
+def add_admin(nick_name, group_name=0):
     """
     添加管理员
-    :param nick_id: 管理员编号
-    :param group_id: 群编号
+    :param nick_name: 管理员昵称
+    :param group_name: 群名
     :return:
     """
-    if user_id not in target_admin_uns.keys():
-        target_admin_uns[user_id] = []
-    if group_id != 0:
-        target_admin_uns[user_id].append(group_id)
+    admin_info = itchat.search_friends(nickName=nick_name)
+    if len(admin_info) <= 0:
+        return False
+    if admin_info[0]['UserName'] not in target_admin_uns.keys():
+        target_admin_uns[admin_info[0]['UserName']] = []
+    if group_name != 0:
+        group_info = itchat.search_chatrooms(group_name)
+        if len(group_info) <= 0:
+            return False
+        target_admin_uns[admin_info[0]['UserName']].append(group_info[0]['UserName'])
     else:
-        target_admin_uns[user_id].append('0')
+        target_admin_uns[admin_info[0]['UserName']].append('0')
     return True
 
 
