@@ -19,6 +19,14 @@ class WechatMessage(models.Model):
     def add_message(msg_id, user_name, user_id, is_group, group_id, group_name, msg_content):
         WechatMessage.objects.create(msg_id=msg_id, user_name=user_name, user_id=user_id, is_group=is_group, group_id=group_id, group_name=group_name, msg_content=msg_content)
 
+    @staticmethod
+    def get_msg_list(start, end):
+        return WechatMessage.objects.all()[start: end]
+
+    @staticmethod
+    def get_msg_size():
+        return WechatMessage.objects.all().count()
+
 
 class TeleMessage(models.Model):
     id = models.IntegerField('编号', primary_key=True)

@@ -9,6 +9,8 @@ urlpatterns = [
     url(r'^wechat_messages/$', pages.WechatMessage.as_view(), name='bot-manage'),
 
     url(r'^messages/$', messages.Message.messages, name='message-url'),
+    url(r'^get_msg/$', messages.Message.get_wechat_messages, name='get wechat message list'),
+
     url(r'^wechat_admin/admin_list/$', bots.WechatBot.get_admin_list, name='get admin list'),
     url(r'^wechat_admin/add_admin/$', bots.WechatBot.add_admin, name='add wechat admin'),
     url(r'^wechat_admin/edit_admin/$', bots.WechatBot.edit_admin, name='edit wechat admin'),
