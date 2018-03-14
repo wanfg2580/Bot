@@ -3,3 +3,4 @@
 *.pyc
 .pyc
 *.pkl
+nohup.out

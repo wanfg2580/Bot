@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models
 
 
@@ -10,7 +12,7 @@ class WechatMessage(models.Model):
     group_id = models.CharField('群编号', max_length=255)
     group_name = models.CharField('群名', max_length=50)
     msg_content = models.TextField('消息内容')
-    created_at = models.DateField('创建时间', auto_now_add=True)
+    created_at = models.DateTimeField('创建时间', auto_now_add=True)
 
     class Meta:
         db_table = 'wxmessages'
@@ -21,7 +23,7 @@ class WechatMessage(models.Model):
 
     @staticmethod
     def get_msg_list(start, end):
-        return WechatMessage.objects.all()[start: end]
+        return WechatMessage.objects.all().order_by('-created_at')[start: end]
 
     @staticmethod
     def get_msg_size():

@@ -16,7 +16,8 @@ var getMsgList = function (page) {
                         "<td>-</td>";
                 }
                 html += "<td>" + msg_list[i].user_name + "</td>";
-                html += "<td>" + msg_list[i].msg_content + "</td></tr>";
+                html += "<td>" + msg_list[i].msg_content + "</td>";
+                html += "<td>" + msg_list[i].created_at + "</td></tr>";
             }
             $("#message-list").html(html);
         }
@@ -32,7 +33,6 @@ var setPage = function (index, size) {
         totalPages: size, //总页数，这里是用的EL表达式，获取从后台传过来的值
         numberOfPages: 5,
         itemTexts: function (type, page, current) {//设置显示的样式，默认是箭头
-            console.log(type);
             switch (type) {
                 case "first":
                     return "首页";
