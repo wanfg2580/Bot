@@ -1,7 +1,8 @@
 var page_size = 20;
+var group_id = "0";
 
 var getMsgList = function (page) {
-    var url = "/get_msg/?id=" + page + "&page_size=" + page_size;
+    var url = "/get_msg/?id=" + page + "&page_size=" + page_size + "&group_id=" + group_id;
     getData(url, function (data) {
         if (data !== null && data.code === "0000") {
             msg_list = data.msg_list;
@@ -48,11 +49,31 @@ var setPage = function (index, size) {
         },
         //点击事件
         onPageClicked: function (event, originalEvent, type, page) {
-            getMsgList(page);
+            getMsgList(page, group_id);
         }
 
     };
     $("#page").bootstrapPaginator(options);
 };
 
+var getGroupList = function () {
+    getData("/get_group_list/", function (data) {
+        console.log(data);
+        if (data !== null && data.code === "0000") {
+            group_list = data.group_list;
+            html = "<option value='0'>全部</option>";
+            for (var i = 0; i < group_list.length; i++) {
+                html += "<option value='" + group_list[i].group_id + "'>" + group_list[i].group_name + "</option>";
+            }
+            $('#group-list').html(html);
+        }
+    })
+};
+
+var changeGroup = function (values) {
+    group_id = values;
+    getMsgList(1);
+};
+
 getMsgList(1);
+getGroupList();

@@ -10,6 +10,7 @@ urlpatterns = [
 
     url(r'^messages/$', messages.Message.messages, name='message-url'),
     url(r'^get_msg/$', messages.Message.get_wechat_messages, name='get wechat message list'),
+    url(r'^get_group_list/$', messages.Message.get_message_group, name='get wechat group list'),
 
     url(r'^wechat_admin/admin_list/$', bots.WechatBot.get_admin_list, name='get admin list'),
     url(r'^wechat_admin/add_admin/$', bots.WechatBot.add_admin, name='add wechat admin'),

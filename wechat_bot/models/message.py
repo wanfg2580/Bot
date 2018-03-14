@@ -23,11 +23,23 @@ class WechatMessage(models.Model):
 
     @staticmethod
     def get_msg_list(start, end):
-        return WechatMessage.objects.all().order_by('-created_at')[start: end]
+        return WechatMessage.objects.all().order_by('created_at')[start: end]
 
     @staticmethod
     def get_msg_size():
         return WechatMessage.objects.all().count()
+
+    @staticmethod
+    def get_group_msg_size(group_id):
+        return WechatMessage.objects.filter(group_id=group_id).count()
+
+    @staticmethod
+    def get_group_list():
+        return WechatMessage.objects.distinct().values("group_name", "group_id")
+
+    @staticmethod
+    def get_group_message(group_id, start, end):
+        return WechatMessage.objects.filter(group_id=group_id).order_by('created_at')[start: end]
 
 
 class TeleMessage(models.Model):

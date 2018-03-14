@@ -67,6 +67,14 @@
                             微信信息列表
                         </div>
                         <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <span>选择群组：</span>
+                                    <select id="group-list" onchange="changeGroup(this[selectedIndex].value);">
+                                    </select>
+                                </div>
+                                <div class="col-md-6"></div>
+                            </div>
                             <div class="table-responsive">
                                 <table class="table table-striped">
                                     <thead>
